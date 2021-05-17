@@ -1,6 +1,23 @@
 const express = require('express');
 const app = express();
 
+// Regular expressions
+const r1 = /\s\(/g;
+const r2 = /\)/g;
+const r2a = /\s\[/g
+const r2b = /\]/g
+const r3 = /(contains .+ or less of(:?)(\s?))|(contains \d% or less of(:?)(\s?))|(contains less than \d% of(:?)(\s?))|(contains less than \d%(:?)(\s?))|(contains one or more of(:?)(\s?))|(each of the following(:?)(\s?))|(the following(:?)(\s?))/g;
+const r4 = /:\s/g;
+const r5 = /[.](?=.*[.,])/g;
+const r6 = /\.$/g;
+const r7 = /(, and )/g;
+const r8 = /( and )/g;
+const r9 = /\*/g;
+const r10 = /(, )/g;
+const r11 = /;/g;
+const r12 = /( - )/g;
+const r13 = /\,\,/g;
+
 app.get('/', (req, res) => {
   foodList = createFoodList();
 
@@ -61,45 +78,6 @@ function createFoodList() {
 function cleanIngredientString(s) {
 	// Convert to lowercase
 	s = s.toLowerCase();
-
-	// Flatten Nested string
-	const r1 = /\s\(/g; // detect opening parenthesis
-	const r2 = /\)/g; // detect closing parenthesis
-
-	// Remove brackets
-	const r2a = /\s\[/g // detect opening brackets
-	const r2b = /\]/g // detect closing brackets
-
-	// Strip unnessary language (regex to accommodate variable percentages)
-	const r3 = /(contains .+ or less of(:?)(\s?))|(contains \d% or less of(:?)(\s?))|(contains less than \d% of(:?)(\s?))|(contains less than \d%(:?)(\s?))|(contains one or more of(:?)(\s?))|(each of the following(:?)(\s?))|(the following(:?)(\s?))/g;
-
-	// Replace any remaining colons with commas
-	const r4 = /:\s/g;
-
-	// Replace all periods that have another occurance following (not the last period), with a ","
-	const r5 = /[.](?=.*[.,])/g;
-
-	// Strip the last period in the string
-	const r6 = /\.$/g;
-
-	// Fix "AND" instances
-	const r7 = /(, and )/g;
-	const r8 = /( and )/g;
-
-	// Strip *
-	const r9 = /\*/g;
-
-	// Remove space between comma and item
-	const r10 = /(, )/g;
-
-	// Replace semicolon with comma
-	const r11 = /;/g;
-
-	// Replace " - " with ","
-	const r12 = /( - )/g;
-
-	// Replace double commas with single
-	const r13 = /\,\,/g;
 
 	// Perform the replacements on the string
 	s = s.replace(r1, ",")
